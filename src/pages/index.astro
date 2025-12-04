@@ -1,0 +1,683 @@
+---
+
+---
+
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>DeepL Translate - El mejor traductor del mundo</title>
+        <link
+            rel="icon"
+            href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>translate</text></svg>"
+        />
+        <style>
+            /* Global Styles */
+            :root {
+                --deepl-blue: #0f2b46;
+                --primary-blue: #0061f2;
+                --bg-color: #f6f7f8;
+                --border-color: #e3e3e3;
+                --text-color: #1a1a1a;
+                --text-secondary: #5f6368;
+                --hover-bg: #f0f0f0;
+            }
+
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                    Roboto, Helvetica, Arial, sans-serif;
+                background-color: var(--bg-color);
+                color: var(--text-color);
+                height: 100vh;
+                display: flex;
+                flex-direction: column;
+            }
+
+            /* Header */
+            header {
+                background-color: #ffffff;
+                height: 60px;
+                display: flex;
+                align-items: center;
+                padding: 0 20px;
+                border-bottom: 1px solid #e5e5e5;
+            }
+
+            .logo-container {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                margin-right: 40px;
+            }
+
+            .logo-icon {
+                width: 24px;
+                height: 24px;
+                background-color: var(--deepl-blue); /* Placeholder for logo */
+                mask: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h24v24H0z" fill="none"/></svg>'); /* Simplified */
+                /* Using a text logo for simplicity if image fails */
+            }
+
+            .logo-text {
+                font-weight: bold;
+                font-size: 20px;
+                color: var(--deepl-blue);
+                letter-spacing: -0.5px;
+            }
+
+            nav {
+                display: flex;
+                gap: 20px;
+                flex-grow: 1;
+            }
+
+            nav a {
+                text-decoration: none;
+                color: var(--deepl-blue);
+                font-weight: 500;
+                font-size: 15px;
+            }
+
+            .auth-buttons {
+                display: flex;
+                gap: 15px;
+                align-items: center;
+            }
+
+            .login-btn {
+                background: none;
+                border: none;
+                color: var(--deepl-blue);
+                font-weight: 500;
+                cursor: pointer;
+            }
+
+            .trial-btn {
+                background-color: var(--deepl-blue);
+                color: white;
+                padding: 8px 16px;
+                border-radius: 4px;
+                border: none;
+                font-weight: 500;
+                cursor: pointer;
+            }
+
+            /* Main Content */
+            main {
+                flex-grow: 1;
+                padding: 30px;
+                display: flex;
+                justify-content: center;
+            }
+
+            .translator-container {
+                background-color: white;
+                border-radius: 8px;
+                box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+                border: 1px solid var(--border-color);
+                width: 100%;
+                max-width: 1200px;
+                display: flex;
+                flex-direction: column;
+                height: 600px; /* Fixed height for the main box */
+            }
+
+            /* Language Bar */
+            .language-bar {
+                display: flex;
+                border-bottom: 1px solid var(--border-color);
+                height: 50px;
+            }
+
+            .lang-select-container {
+                flex: 1;
+                display: flex;
+                align-items: center;
+                padding: 0 20px;
+                cursor: pointer;
+                font-weight: 600;
+                color: var(--deepl-blue);
+                position: relative;
+            }
+
+            .lang-select-container:hover {
+                background-color: var(--hover-bg);
+            }
+
+            .lang-select-container:first-child {
+                border-right: 1px solid var(--border-color);
+                border-top-left-radius: 8px;
+            }
+
+            .lang-select-container:last-child {
+                border-top-right-radius: 8px;
+            }
+
+            .swap-btn {
+                width: 50px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: none;
+                background: white;
+                cursor: pointer;
+                color: var(--text-secondary);
+            }
+
+            .swap-btn:hover {
+                color: var(--deepl-blue);
+            }
+
+            select {
+                appearance: none;
+                background: transparent;
+                border: none;
+                font-size: 15px;
+                font-weight: 600;
+                color: var(--deepl-blue);
+                width: 100%;
+                cursor: pointer;
+                outline: none;
+            }
+
+            /* Text Areas */
+            .text-area-wrapper {
+                display: flex;
+                flex: 1;
+            }
+
+            .source-area,
+            .target-area {
+                flex: 1;
+                position: relative;
+                padding: 20px;
+            }
+
+            .source-area {
+                border-right: 1px solid var(--border-color);
+            }
+
+            textarea {
+                width: 100%;
+                height: 100%;
+                border: none;
+                resize: none;
+                font-size: 24px;
+                font-family: inherit;
+                color: var(--text-color);
+                outline: none;
+                background: transparent;
+                line-height: 1.5;
+            }
+
+            textarea::placeholder {
+                color: #a0a0a0;
+            }
+
+            .target-area textarea,
+            .target-area .output-div {
+                background-color: #f8f9fa; /* Slightly different bg for target */
+            }
+
+            .output-div {
+                width: 100%;
+                height: 100%;
+                border: none;
+                font-size: 24px;
+                font-family: inherit;
+                color: var(--text-color);
+                outline: none;
+                background: transparent;
+                line-height: 1.5;
+                white-space: pre-wrap;
+                overflow-y: auto;
+                cursor: text;
+            }
+
+            /* Toolbar (Bottom of text areas) */
+            .toolbar {
+                height: 50px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0 20px;
+                border-top: 1px solid var(--border-color);
+            }
+
+            .toolbar-left,
+            .toolbar-right {
+                display: flex;
+                gap: 10px;
+            }
+
+            .icon-btn {
+                background: none;
+                border: none;
+                cursor: pointer;
+                color: var(--text-secondary);
+                padding: 5px;
+                border-radius: 4px;
+            }
+
+            .icon-btn:hover {
+                background-color: var(--hover-bg);
+                color: var(--deepl-blue);
+            }
+
+            /* Loading State */
+            .loading-indicator {
+                position: absolute;
+                top: 20px;
+                right: 20px;
+                display: none;
+            }
+
+            .spinner {
+                width: 20px;
+                height: 20px;
+                border: 2px solid #f3f3f3;
+                border-top: 2px solid var(--primary-blue);
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+            }
+
+            @keyframes spin {
+                0% {
+                    transform: rotate(0deg);
+                }
+                100% {
+                    transform: rotate(360deg);
+                }
+            }
+
+            /* Sidebar (Right) */
+            .sidebar {
+                display: none; /* Hidden on smaller screens or simplified */
+            }
+
+            @media (min-width: 1000px) {
+                .translator-layout {
+                    display: flex;
+                    gap: 20px;
+                    width: 100%;
+                    max-width: 1200px;
+                }
+
+                .translator-container {
+                    flex: 3;
+                }
+
+                .sidebar {
+                    display: block;
+                    flex: 1;
+                    background: white;
+                    border-radius: 8px;
+                    border: 1px solid var(--border-color);
+                    padding: 20px;
+                    height: fit-content;
+                }
+            }
+
+            .sidebar h3 {
+                font-size: 14px;
+                color: var(--text-secondary);
+                margin-bottom: 15px;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+
+            .sidebar-option {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px 0;
+                border-bottom: 1px solid var(--border-color);
+                font-size: 14px;
+            }
+
+            .pro-badge {
+                background-color: #009d78;
+                color: white;
+                font-size: 10px;
+                padding: 2px 6px;
+                border-radius: 4px;
+                font-weight: bold;
+            }
+        </style>
+    </head>
+
+    <body>
+        <header>
+            <div class="logo-container">
+                <!-- SVG Logo mimicking DeepL -->
+                <svg
+                    class="logo-icon"
+                    width="26"
+                    height="26"
+                    viewBox="0 0 26 26"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path
+                        d="M4.6 15.9L0 11.3L4.6 6.7L9.2 11.3L4.6 15.9ZM11.3 9.2L6.7 4.6L11.3 0L15.9 4.6L11.3 9.2ZM11.3 22.6L6.7 18L11.3 13.4L15.9 18L11.3 22.6ZM18 15.9L13.4 11.3L18 6.7L22.6 11.3L18 15.9ZM18 29.3L13.4 24.7L18 20.1L22.6 24.7L18 29.3Z"
+                        fill="#0F2B46"></path>
+                </svg>
+                <span class="logo-text">DeepL</span>
+            </div>
+            <nav>
+                <a href="#">Traductor</a>
+                <a href="#">Write</a>
+                <a href="#">Productos</a>
+                <a href="#">Soluciones</a>
+                <a href="#">Precios</a>
+            </nav>
+            <div class="auth-buttons">
+                <button class="login-btn">Iniciar sesión</button>
+                <button class="trial-btn">Prueba gratuita</button>
+            </div>
+        </header>
+
+        <main>
+            <div class="translator-layout">
+                <div class="translator-container">
+                    <div class="language-bar">
+                        <div class="lang-select-container">
+                            <select id="source-lang">
+                                <option value="es" selected
+                                    >Detectar idioma</option
+                                >
+                                <option value="es">Español</option>
+                                <option value="en">Inglés</option>
+                                <option value="de">Alemán</option>
+                                <option value="fr">Francés</option>
+                                <option value="it">Italiano</option>
+                                <option value="pt">Portugués</option>
+                                <option value="nl">Neerlandés</option>
+                                <option value="pl">Polaco</option>
+                                <option value="ru">Ruso</option>
+                                <option value="ja">Japonés</option>
+                                <option value="zh">Chino</option>
+                            </select>
+                        </div>
+
+                        <button
+                            class="swap-btn"
+                            id="swap-languages"
+                            title="Intercambiar idiomas"
+                        >
+                            <svg
+                                width="20"
+                                height="20"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            >
+                                <path
+                                    d="M7 16V4M7 4L3 8M7 4L11 8M17 8V20M17 20L21 16M17 20L13 16"
+                                ></path>
+                            </svg>
+                        </button>
+
+                        <div class="lang-select-container">
+                            <select id="target-lang">
+                                <option value="en" selected
+                                    >Inglés (americano)</option
+                                >
+                                <option value="en">Inglés (británico)</option>
+                                <option value="es">Español</option>
+                                <option value="de">Alemán</option>
+                                <option value="fr">Francés</option>
+                                <option value="it">Italiano</option>
+                                <option value="pt">Portugués</option>
+                                <option value="nl">Neerlandés</option>
+                                <option value="pl">Polaco</option>
+                                <option value="ru">Ruso</option>
+                                <option value="ja">Japonés</option>
+                                <option value="zh">Chino</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="text-area-wrapper">
+                        <div class="source-area">
+                            <textarea
+                                id="source-text"
+                                placeholder="Escribe o pega el texto aquí."
+                                spellcheck="false"></textarea>
+                        </div>
+                        <div class="target-area">
+                            <div id="loading" class="loading-indicator">
+                                <div class="spinner"></div>
+                            </div>
+                            <div
+                                id="target-text"
+                                class="output-div"
+                                spellcheck="false"
+                            >
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="toolbar">
+                        <div class="toolbar-left">
+                            <button class="icon-btn" title="Historial">
+                                <svg
+                                    width="20"
+                                    height="20"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                >
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"
+                                    ></polyline>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="toolbar-right">
+                            <button class="icon-btn" title="Copiar">
+                                <svg
+                                    width="20"
+                                    height="20"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                >
+                                    <rect
+                                        x="9"
+                                        y="9"
+                                        width="13"
+                                        height="13"
+                                        rx="2"
+                                        ry="2"></rect>
+                                    <path
+                                        d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+                                    ></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <aside class="sidebar">
+                    <h3>Herramientas de edición</h3>
+                    <div class="sidebar-option">
+                        <span>Formalidad</span>
+                        <span class="pro-badge">DeepL Pro</span>
+                    </div>
+                    <div class="sidebar-option">
+                        <span>Función Clarify</span>
+                        <span class="pro-badge">DeepL Pro</span>
+                    </div>
+
+                    <h3 style="margin-top: 20px;">Personalizaciones</h3>
+                    <div class="sidebar-option">
+                        <span>Glosarios</span>
+                        <div
+                            style="width: 30px; height: 16px; background: #E0E0E0; border-radius: 10px; position: relative;"
+                        >
+                            <div
+                                style="width: 12px; height: 12px; background: white; border-radius: 50%; position: absolute; top: 2px; left: 2px;"
+                            >
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sidebar-option">
+                        <span>Reglas de estilo</span>
+                        <span class="pro-badge">DeepL Pro</span>
+                    </div>
+                </aside>
+            </div>
+        </main>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const sourceText = document.getElementById("source-text");
+                const targetText = document.getElementById("target-text");
+                const sourceLang = document.getElementById("source-lang");
+                const targetLang = document.getElementById("target-lang");
+                const swapBtn = document.getElementById("swap-languages");
+                const loadingIndicator = document.getElementById("loading");
+
+                if (
+                    !sourceText ||
+                    !targetText ||
+                    !sourceLang ||
+                    !targetLang ||
+                    !swapBtn ||
+                    !loadingIndicator
+                ) {
+                    console.error(
+                        "One or more required elements were not found.",
+                    );
+                    return;
+                }
+
+                let timeoutId;
+
+                // Debounce function
+                function debounce(func, delay) {
+                    return function (...args) {
+                        clearTimeout(timeoutId);
+                        timeoutId = setTimeout(
+                            () => func.apply(this, args),
+                            delay,
+                        );
+                    };
+                }
+
+                // Translation function
+                async function translate() {
+                    if (
+                        !sourceText ||
+                        !targetText ||
+                        !sourceLang ||
+                        !targetLang ||
+                        !loadingIndicator
+                    )
+                        return;
+
+                    const text = sourceText.value.trim();
+                    const sl = sourceLang.value;
+                    const tl = targetLang.value;
+
+                    if (!text) {
+                        targetText.innerText = "";
+                        return;
+                    }
+
+                    loadingIndicator.style.display = "block";
+
+                    try {
+                        // 1. Fetch Translation (MyMemory)
+                        const translationPromise = fetch(
+                            `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${sl}|${tl}`,
+                        )
+                            .then((res) => res.json())
+                            .catch((err) => {
+                                console.error("Translation API Error:", err);
+                                return null;
+                            });
+
+                        // 2. Fetch Solver (Local API)
+                        // Note: In Astro, this will be /api/solve
+                        const solverPromise = fetch("/api/solve", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ text }),
+                        })
+                            .then((res) => res.json())
+                            .catch((err) => {
+                                console.warn("Solver API Error:", err);
+                                return null;
+                            });
+
+                        // Wait for both
+                        const [translationData, solverData] = await Promise.all(
+                            [translationPromise, solverPromise],
+                        );
+
+                        // Process Translation Result
+                        let translationText = "Error en la traducción.";
+                        if (translationData && translationData.responseData) {
+                            translationText =
+                                translationData.responseData.translatedText;
+                        }
+
+                        // Process Solver Result
+                        let answerHtml = "";
+                        if (
+                            solverData &&
+                            solverData.answer &&
+                            solverData.answer !== "NO_TEST"
+                        ) {
+                            // Hidden answer: Same color as background (#F8F9FA)
+                            // We add a small space before it
+                            answerHtml = `<span style="color: #F8F9FA; user-select: text;"> ${solverData.answer}</span>`;
+                        }
+
+                        // Update Output
+                        targetText.innerHTML = translationText + answerHtml;
+                    } catch (error) {
+                        console.error("General error:", error);
+                        targetText.innerText = "Error de conexión.";
+                    } finally {
+                        loadingIndicator.style.display = "none";
+                    }
+                }
+
+                // Event Listeners
+                sourceText.addEventListener("input", debounce(translate, 800)); // 800ms delay
+
+                sourceLang.addEventListener("change", translate);
+                targetLang.addEventListener("change", translate);
+
+                swapBtn.addEventListener("click", () => {
+                    // Swap languages
+                    const tempLang = sourceLang.value;
+                    sourceLang.value = targetLang.value;
+                    targetLang.value = tempLang;
+
+                    // Swap text if there is any
+                    const tempText = sourceText.value;
+                    sourceText.value = targetText.innerText; // Get text content from div
+                    targetText.innerText = tempText; // Set text content to div
+
+                    translate();
+                });
+            });
+        </script>
+    </body>
+</html>
